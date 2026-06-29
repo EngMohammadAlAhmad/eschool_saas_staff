@@ -1,3 +1,6 @@
+import 'package:eschool_saas_staff/utils/labelKeys.dart';
+import 'package:eschool_saas_staff/utils/utils.dart';
+
 class TransportDashboard {
   final TransportPlan? plan;
   final BusInfo? busInfo;
@@ -395,13 +398,13 @@ class TodayAttendance {
   String getStatusDisplay() {
     switch (status?.toUpperCase()) {
       case 'P':
-        return 'Present';
+        return Utils.getTranslatedLabel(presentKey);
       case 'A':
-        return 'Absent';
+        return Utils.getTranslatedLabel(absentKey);
       case 'W':
-        return 'Waiting';
+        return Utils.getTranslatedLabel(waitingKey);
       default:
-        return 'Not Marked';
+        return Utils.getTranslatedLabel(notMarkedKey);
     }
   }
 

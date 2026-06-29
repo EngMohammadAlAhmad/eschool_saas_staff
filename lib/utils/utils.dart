@@ -433,13 +433,13 @@ class Utils {
   }
 
   static final List<String> weekDays = [
+    sundayKey,
     mondayKey,
     tuesdayKey,
     wednesdayKey,
     thursdayKey,
     fridayKey,
-    saturdayKey,
-    sundayKey
+    saturdayKey
   ];
 
   ///[This will determine this text will take how many number of lines in the ui]

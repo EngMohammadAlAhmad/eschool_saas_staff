@@ -116,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ],
           ),
           const SizedBox(
-            height: 10,
+            height: 40.0,
           ),
         ],
       ),
@@ -159,13 +159,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 75),
+                    const SizedBox(height: 75.0),
                     const CustomTextContainer(
                       textKey: letSignInKey,
                       style:
                           TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
                     ),
-                    const SizedBox(height: 5),
+                    const SizedBox(height: 5.0),
                     const CustomTextContainer(
                       textKey: signInScreenSubTitleKey,
                       style: TextStyle(fontSize: 16.0, height: 1.1),
@@ -200,7 +200,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           }),
                     ),
                     SafeArea(child: _buildForgotPasswordButton()),
-                    const SizedBox(height: 25),
+                    const SizedBox(height: 25.0),
                     BlocConsumer<SignInCubit, SignInState>(
                       listener: (context, state) {
                         if (state is SignInSuccess) {

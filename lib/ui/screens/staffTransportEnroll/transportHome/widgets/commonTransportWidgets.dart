@@ -91,32 +91,33 @@ class LabelValue extends StatelessWidget {
   final bool smallValueStyle;
   final bool addTopSpacing;
   final bool addBottomSpacing;
-  const LabelValue(
-      {super.key,
-      required this.label,
-      required this.value,
-      this.smallValueStyle = false,
-      this.addTopSpacing = true,
-      this.addBottomSpacing = true});
+  const LabelValue({
+    super.key,
+    required this.label,
+    required this.value,
+    this.smallValueStyle = false,
+    this.addTopSpacing = true,
+    this.addBottomSpacing = true,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: addBottomSpacing ? 8 : 0),
+      padding: EdgeInsets.only(bottom: addBottomSpacing ? 8.0 : 0.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (addTopSpacing) const SizedBox(height: 2),
+          if (addTopSpacing) const SizedBox(height: 2.0),
           CustomTextContainer(
             textKey: label,
             style: const TextStyle(color: Color(0xFF6D6E6F), fontSize: 12),
           ),
-          if (addBottomSpacing) const SizedBox(height: 2),
+          if (addBottomSpacing) const SizedBox(height: 2.0),
           CustomTextContainer(
             textKey: value,
             style: TextStyle(
               color: const Color(0xFF1A1C1D),
-              fontSize: 14,
+              fontSize: 14.0,
               fontWeight: FontWeight.w500,
               height: smallValueStyle ? 1.0 : null,
             ),
@@ -135,12 +136,12 @@ class IconPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
         color: pillColor ?? Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.0),
       ),
-      child: Icon(icon, size: 16, color: Theme.of(context).colorScheme.primary),
+      child: Icon(icon, size: 16.0, color: Theme.of(context).colorScheme.primary),
     );
   }
 }
@@ -578,7 +579,7 @@ class RequestCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 12.0),
             LabelValue(
               label: Utils.getTranslatedLabel(requestedRouteKey),
               value: requestedRoute,

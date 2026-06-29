@@ -1,7 +1,7 @@
 import 'package:eschool_saas_staff/cubits/authentication/authCubit.dart';
 import 'package:eschool_saas_staff/cubits/transport/transportRequestCubit.dart';
 import 'package:eschool_saas_staff/data/models/transportRequest.dart'
-    as TransportRequestModel;
+as TransportRequestModel;
 import 'package:eschool_saas_staff/ui/screens/staffTransportEnroll/transportHome/widgets/commonTransportWidgets.dart';
 import 'package:eschool_saas_staff/ui/widgets/customCircularProgressIndicator.dart';
 import 'package:eschool_saas_staff/ui/widgets/customTextContainer.dart';
@@ -70,11 +70,9 @@ class _TransportRequestWidgetState extends State<TransportRequestWidget> {
     );
   }
 
-  Widget _buildRequestCard(
-      BuildContext context, TransportRequestModel.TransportRequest request) {
+  Widget _buildRequestCard(BuildContext context, TransportRequestModel.TransportRequest request) {
     final status = request.status.toLowerCase();
-    final statusText = request.statusDisplay;
-    final statusColors = _getStatusColors(status);
+    final statusInfo = _getStatusInfo(status);
 
     return GestureDetector(
       onTap: () {
@@ -85,8 +83,8 @@ class _TransportRequestWidgetState extends State<TransportRequestWidget> {
       },
       child: RequestCard(
         title: Utils.getTranslatedLabel(transportationRequestKey),
-        statusText: statusText,
-        statusBg: statusColors['background']!,
+        statusText: statusInfo['text'] as String,
+        statusBg: statusInfo['background'] as Color,
         requestedRoute: request.details.plan.duration.isNotEmpty
             ? request.details.plan.duration
             : Utils.getTranslatedLabel(notAvailableKey),
@@ -120,7 +118,7 @@ class _TransportRequestWidgetState extends State<TransportRequestWidget> {
           const SizedBox(height: 8),
           CustomTextContainer(
             textKey:
-                Utils.getTranslatedLabel(noPendingTransportationRequestsKey),
+            Utils.getTranslatedLabel(noPendingTransportationRequestsKey),
             style: TextStyle(
               fontSize: 12,
               color: Theme.of(context)
@@ -134,25 +132,32 @@ class _TransportRequestWidgetState extends State<TransportRequestWidget> {
     );
   }
 
-  Map<String, Color> _getStatusColors(String status) {
+  /// Returns localized status text and associated colors for a given status string.
+  /// Uses translation keys (e.g. [acceptedKey], [rejectedKey], [pendingKey])
+  /// instead of the raw [request.statusDisplay] value.
+  Map<String, dynamic> _getStatusInfo(String status) {
     switch (status) {
       case 'accepted':
         return {
+          'text': Utils.getTranslatedLabel(acceptedKey),
           'background': const Color(0xFFE8F5E8),
           'foreground': const Color(0xFF2E7D32),
         };
       case 'rejected':
         return {
+          'text': Utils.getTranslatedLabel(rejectedKey),
           'background': const Color(0xFFF9D2D2),
           'foreground': const Color(0xFFB71C1C),
         };
       case 'pending':
         return {
+          'text': Utils.getTranslatedLabel(pendingKey),
           'background': const Color(0xFFFEEED7),
           'foreground': const Color(0xFF9E6C2C),
         };
       default:
         return {
+          'text': Utils.getTranslatedLabel(notAvailableKey),
           'background': const Color(0xFFF5F5F5),
           'foreground': const Color(0xFF9E9E9E),
         };

@@ -81,7 +81,7 @@ class TransportRequestDetailsScreen extends StatelessWidget {
                 children: [
                   // Title
                   CustomTextContainer(
-                    textKey: 'Transportation Request',
+                    textKey: 'transportationRequest',
                     style: TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w700,

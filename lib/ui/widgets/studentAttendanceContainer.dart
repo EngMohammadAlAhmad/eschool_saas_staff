@@ -88,7 +88,7 @@ class _StudentAttendanceContainerState
                   SizedBox(
                     width: boxConstraints.maxWidth * (0.6),
                     child: const CustomTextContainer(
-                      textKey: nameKey,
+                      textKey: studentNameKey,
                       style: titleStyle,
                     ),
                   ),

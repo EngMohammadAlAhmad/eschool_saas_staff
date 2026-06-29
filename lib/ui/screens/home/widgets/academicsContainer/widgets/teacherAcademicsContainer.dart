@@ -89,16 +89,16 @@ class _TeacherAcademicsContainerState extends State<TeacherAcademicsContainer> {
             moduleId: lessonManagementModuleId.toString()))
           MenusWithTitleContainer(title: subjectLessonKey, menus: [
             CustomMenuTile(
-                iconImageName: "manage_lesson.svg",
-                titleKey: manageLessonKey,
-                onTap: () {
-                  Get.toNamed(Routes.teacherManageLessonScreen);
-                }),
-            CustomMenuTile(
                 iconImageName: "manage_topic.svg",
                 titleKey: manageTopicKey,
                 onTap: () {
                   Get.toNamed(Routes.teacherManageTopicScreen);
+                }),
+            CustomMenuTile(
+                iconImageName: "manage_lesson.svg",
+                titleKey: manageLessonKey,
+                onTap: () {
+                  Get.toNamed(Routes.teacherManageLessonScreen);
                 }),
           ]),
         if (staffAllowedPermissionsAndModulesCubit.isModuleEnabled(

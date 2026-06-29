@@ -1,5 +1,7 @@
 import 'package:eschool_saas_staff/data/models/transportDashboard.dart';
 import 'package:eschool_saas_staff/data/repositories/transportRepository.dart';
+import 'package:eschool_saas_staff/utils/labelKeys.dart';
+import 'package:eschool_saas_staff/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -139,25 +141,25 @@ class TransportDashboardCubit extends Cubit<TransportDashboardState> {
         return {
           'background': const Color(0xFFDFF6E2),
           'foreground': const Color(0xFF37C748),
-          'text': 'Present',
+          'text': Utils.getTranslatedLabel(presentKey),
         };
       case 'A':
         return {
           'background': const Color(0xFFFFE8E8),
           'foreground': const Color(0xFFE53935),
-          'text': 'Absent',
+          'text': Utils.getTranslatedLabel(absentKey),
         };
       case 'W':
         return {
           'background': const Color(0xFFE0EDF6),
           'foreground': const Color(0xFF29638A),
-          'text': 'Waiting',
+          'text': Utils.getTranslatedLabel(waitingKey),
         };
       default:
         return {
           'background': const Color(0xFFF5F5F5),
           'foreground': const Color(0xFF9E9E9E),
-          'text': 'Not Marked',
+          'text': Utils.getTranslatedLabel(notMarkedKey),
         };
     }
   }
