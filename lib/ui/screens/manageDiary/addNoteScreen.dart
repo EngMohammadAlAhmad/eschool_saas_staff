@@ -526,7 +526,6 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
           builder: (context, state) {
             String titleKey = selectedCategory?.name ?? selectCategoryKey;
             bool isLoading = state is DiaryCategoriesFetchInProgress;
-
             if (isLoading) {
               titleKey = "Loading categories...";
             } else if (state is DiaryCategoriesFetchFailure) {
@@ -1171,7 +1170,7 @@ class _CategorySelectionBottomSheetState
                     child: CustomRoundedButton(
                       onTap: widget.onManage,
                       backgroundColor: Theme.of(context).colorScheme.surface,
-                      buttonTitle: "Manage",
+                      buttonTitle: Utils.getTranslatedLabel(manageKey),
                       showBorder: true,
                       widthPercentage: 1.0,
                       height: 50,
@@ -1191,7 +1190,7 @@ class _CategorySelectionBottomSheetState
                         widget.onApply();
                       },
                       backgroundColor: Theme.of(context).colorScheme.primary,
-                      buttonTitle: "Apply",
+                      buttonTitle: Utils.getTranslatedLabel(applyKey),
                       showBorder: false,
                       widthPercentage: 1.0,
                       height: 50,

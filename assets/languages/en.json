@@ -734,6 +734,8 @@
   "yourPlanWillExpireInDays": "Your plan will expire in {days} days.",
   "renewPlan": "Renew Plan",
   "planRenewal": "Plan Renewal",
+  "days": "days",
+  "months": "months",
   "changeStop": "Change Stop",
   "noTeachersFoundForClass": "No teachers found for this class",
   "routeDetails": "Route Details",
@@ -835,9 +837,7 @@
   "loadingLiveRouteData": "Loading live route data...",
   "currentlyAt": "Currently at",
   "markAllPresent": "Mark All Present",
-  "markAllAbsent": "Mark All Absent"
+  "markAllAbsent": "Mark All Absent",
+  "manage": "Manage",
+  "apply": "Apply"
 }
-
-
-
-

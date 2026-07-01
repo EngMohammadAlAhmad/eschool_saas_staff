@@ -12,6 +12,28 @@ import 'package:get/get.dart';
 class TransportPlanCard extends StatelessWidget {
   const TransportPlanCard({super.key});
 
+  /// Get localized duration
+  String _getLocalizedDuration(String? duration) {
+    if (duration == null || duration.isEmpty) {
+      return Utils.getTranslatedLabel(notAvailableKey);
+    }
+
+    // Try to extract the number from the duration string
+    final numberMatch = RegExp(r'(\d+)').firstMatch(duration);
+    final number = numberMatch?.group(1);
+
+    if (number != null) {
+      final d = duration.toLowerCase();
+      if (d.contains('month')) {
+        return '\u200E$number ${Utils.getTranslatedLabel(monthsKey)}';
+      }
+      // Default to days if it's just a number or contains 'day'
+      return '\u200E$number ${Utils.getTranslatedLabel(daysKey)}';
+    }
+
+    return duration;
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<RouteStopsCubit, RouteStopsState>(
@@ -60,8 +82,7 @@ class TransportPlanCard extends StatelessWidget {
                   children: [
                     LabelValue(
                       label: Utils.getTranslatedLabel(planDurationKey),
-                      value: plan?.duration ??
-                          Utils.getTranslatedLabel(notAvailableKey),
+                      value: _getLocalizedDuration(plan?.duration),
                     ),
                     LabelValue(
                       label: Utils.getTranslatedLabel(validityPeriodKey),

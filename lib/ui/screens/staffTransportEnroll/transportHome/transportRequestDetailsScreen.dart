@@ -47,20 +47,57 @@ class TransportRequestDetailsScreen extends StatelessWidget {
   String _getFooterNote(String status) {
     switch (status.toLowerCase()) {
       case 'accepted':
-        return 'Your transportation request has been approved. The new plan is now active.';
+        return acceptedNoteKey;
       case 'rejected':
-        return 'Your request was rejected. Please contact the transport department for alternate arrangements or refund.';
+        return rejectedNoteKey;
       case 'pending':
-        return 'Your request is being processed';
+        return pendingNoteKey;
       default:
-        return 'Please contact the transport department for more information.';
+        return unKnownNoteKey;
     }
+  }
+
+  /// Get localized status text
+  String _getLocalizedStatus(String status) {
+    switch (status.toLowerCase()) {
+      case 'accepted':
+        return Utils.getTranslatedLabel(acceptedKey);
+      case 'rejected':
+        return Utils.getTranslatedLabel(rejectedKey);
+      case 'pending':
+        return Utils.getTranslatedLabel(pendingKey);
+      default:
+        return Utils.getTranslatedLabel(unknownKey);
+    }
+  }
+
+  /// Get localized duration
+  String _getLocalizedDuration(String duration) {
+    if (duration.isEmpty) {
+      return Utils.getTranslatedLabel(notAvailableKey);
+    }
+
+    // Try to extract the number from the duration string
+    final numberMatch = RegExp(r'(\d+)').firstMatch(duration);
+    final number = numberMatch?.group(1);
+
+    if (number != null) {
+      final d = duration.toLowerCase();
+      if (d.contains('month')) {
+        return '\u200E$number ${Utils.getTranslatedLabel(monthsKey)}';
+      }
+      // Default to days if it's just a number or contains 'day'
+      return '\u200E$number ${Utils.getTranslatedLabel(daysKey)}';
+    }
+
+    return duration;
   }
 
   @override
   Widget build(BuildContext context) {
     final statusColors = _getStatusColors(transportRequest.status);
     final footerNote = _getFooterNote(transportRequest.status);
+    final localizedStatus = _getLocalizedStatus(transportRequest.status);
     final showNewRequest = transportRequest.isRejected;
 
     return Scaffold(
@@ -109,12 +146,12 @@ class TransportRequestDetailsScreen extends StatelessWidget {
                             Expanded(
                               child: _buildDetailItem(
                                 context,
-                                'Requested On',
+                                Utils.getTranslatedLabel(requestedOnKey),
                                 transportRequest.requestedOn,
                               ),
                             ),
                             StatusTag(
-                              text: transportRequest.statusDisplay,
+                              text: localizedStatus,
                               bg: statusColors['background']!,
                               fg: statusColors['foreground']!,
                             ),
@@ -126,7 +163,7 @@ class TransportRequestDetailsScreen extends StatelessWidget {
                         if (transportRequest.requestedBy.name.isNotEmpty) ...[
                           _buildDetailItem(
                             context,
-                            'Requested By',
+                            Utils.getTranslatedLabel(requestedByKey),
                             transportRequest.requestedBy.name,
                           ),
                           const SizedBox(height: 16),
@@ -149,7 +186,8 @@ class TransportRequestDetailsScreen extends StatelessWidget {
                           _buildDetailItem(
                             context,
                             Utils.getTranslatedLabel(planDurationKey),
-                            transportRequest.details.plan.duration,
+                            _getLocalizedDuration(
+                                transportRequest.details.plan.duration),
                           ),
                           const SizedBox(height: 16),
                         ],
@@ -159,14 +197,14 @@ class TransportRequestDetailsScreen extends StatelessWidget {
                             .details.plan.validity.isNotEmpty) ...[
                           _buildDetailItem(
                             context,
-                            'Plan Validity',
+                            Utils.getTranslatedLabel(planValidityKey),
                             transportRequest.details.plan.validity,
                           ),
                           const SizedBox(height: 16),
                         ],
 
                         // Responded On
-                        if (transportRequest.review != null &&
+                        /*if (transportRequest.review != null &&
                             transportRequest
                                 .review!.respondedOn.isNotEmpty) ...[
                           _buildDetailItem(
@@ -175,7 +213,7 @@ class TransportRequestDetailsScreen extends StatelessWidget {
                             transportRequest.review!.respondedOn,
                           ),
                           const SizedBox(height: 16),
-                        ],
+                        ],*/
 
                         // School Email
                         if (transportRequest
@@ -189,8 +227,7 @@ class TransportRequestDetailsScreen extends StatelessWidget {
                         ],
 
                         // School Phone (Last item - no bottom spacing)
-                        if (transportRequest
-                            .contactDetails.schoolPhone.isNotEmpty)
+                        if (transportRequest.contactDetails.schoolPhone.isNotEmpty)
                           _buildDetailItem(
                             context,
                             Utils.getTranslatedLabel(schoolPhoneKey),
