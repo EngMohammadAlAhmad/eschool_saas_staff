@@ -7,8 +7,7 @@ import 'package:eschool_saas_staff/utils/api.dart';
 import 'package:eschool_saas_staff/utils/constants.dart';
 
 class LeaveRepository {
-  Future<List<LeaveDetails>> getLeaves(
-      {required LeaveDayType leaveDayType}) async {
+  Future<List<LeaveDetails>> getLeaves({required LeaveDayType leaveDayType}) async {
     try {
       final result = await Api.get(url: Api.getLeaves, queryParameters: {
         "type": getLeaveDayTypeStatus(leaveDayType: leaveDayType)

@@ -128,11 +128,10 @@ class _TeacherTodaysTimetableContainerState
               child: Column(
                 children: [
                   const ContentTitleWithViewMoreButton(
-                      showViewMoreButton: false,
-                      contentTitleKey: todaysTimetableKey),
-                  const SizedBox(
-                    height: 15,
+                    showViewMoreButton: false,
+                    contentTitleKey: todaysTimetableKey,
                   ),
+                  const SizedBox(height: 15.0),
                   ...List.generate(
                     slots.length > itemsToShowWithoutExpansion
                         ? itemsToShowWithoutExpansion
@@ -143,8 +142,7 @@ class _TeacherTodaysTimetableContainerState
                         note: timeTableSlot.note ?? "",
                         endTime: timeTableSlot.endTime ?? "",
                         isForClass: false,
-                        classSectionName:
-                            timeTableSlot.classSection?.fullName ?? "-",
+                        classSectionName: timeTableSlot.classSection?.fullName ?? "-",
                         startTime: timeTableSlot.startTime ?? "",
                         subjectName: timeTableSlot.subject?.name ?? "-",
                       );

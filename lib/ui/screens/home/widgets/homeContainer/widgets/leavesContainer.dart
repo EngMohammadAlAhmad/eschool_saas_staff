@@ -69,10 +69,8 @@ class LeavesContainer extends StatelessWidget {
                 )
               : todaysLeave.isEmpty
                   ? Padding(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: appContentHorizontalPadding),
-                      child: const CustomTextContainer(
-                          textKey: everyoneIsPresentTodayKey),
+                      padding: EdgeInsets.symmetric(horizontal: appContentHorizontalPadding),
+                      child: const CustomTextContainer(textKey: everyoneIsPresentTodayKey),
                     )
                   : Column(
                       children: [

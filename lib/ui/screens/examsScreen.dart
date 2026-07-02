@@ -157,7 +157,7 @@ class _ExamsScreenState extends State<ExamsScreen> {
                   Expanded(
                     child: _buildTitleValueContainer(
                         showBorder: false,
-                        titleKey: classSectionKey,
+                        titleKey: classSection2Key,
                         value: offlineExam.className ?? "-"),
                   ),
                   SizedBox(
@@ -213,9 +213,9 @@ class _ExamsScreenState extends State<ExamsScreen> {
             alignment: Alignment.topCenter,
             child: SingleChildScrollView(
               padding: EdgeInsets.only(
-                  bottom: 70,
-                  top:
-                      Utils.appContentTopScrollPadding(context: context) + 100),
+                bottom: 70.0,
+                top: Utils.appContentTopScrollPadding(context: context) + 100.0,
+              ),
               child: Container(
                 padding: EdgeInsets.all(appContentHorizontalPadding),
                 color: Theme.of(context).colorScheme.surface,

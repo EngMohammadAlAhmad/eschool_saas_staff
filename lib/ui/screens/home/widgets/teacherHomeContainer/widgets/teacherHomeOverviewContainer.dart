@@ -3,7 +3,6 @@ import 'package:eschool_saas_staff/cubits/homeScreenDataCubit.dart';
 import 'package:eschool_saas_staff/ui/screens/home/widgets/homeContainer/widgets/contentTitleWithViewmoreButton.dart';
 import 'package:eschool_saas_staff/ui/screens/home/widgets/homeContainer/widgets/overviewDetailsContainer.dart';
 import 'package:eschool_saas_staff/ui/styles/themeExtensions/customColorsExtension.dart';
-import 'package:eschool_saas_staff/utils/constants.dart';
 import 'package:eschool_saas_staff/utils/labelKeys.dart';
 import 'package:eschool_saas_staff/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -17,17 +16,26 @@ class TeacherHomeOverviewContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const ContentTitleWithViewMoreButton(
-            showViewMoreButton: false, contentTitleKey: overviewKey),
-        const SizedBox(
-          height: 15,
-        ),
+        const ContentTitleWithViewMoreButton(showViewMoreButton: false, contentTitleKey: overviewKey),
+        const SizedBox(height: 15.0),
         SizedBox(
+          height: 150.0,
+          child: OverviewDetailsContainer(
+              //backgroundColor: Theme.of(context).extension<CustomColors>()!.totalStudentOverviewBackgroundColor!,
+              backgroundColor: Theme.of(context).extension<CustomColors>()!.totalTeacherOverviewBackgroundColor!,
+              titleKey: totalStudentsKey,
+              value: context.read<HomeScreenDataCubit>().getTotalStudents().toString(),
+              iconPath: Utils.getImagePath("students_overview.svg"),
+              bottomButtonTitleKey: viewStudentsKey,
+              onTapBottomViewButton: () {
+                Get.toNamed(Routes.studentsScreen);
+              }),
+        ),
+        /*SizedBox(
           height: 150,
           child: ListView(
             scrollDirection: Axis.horizontal,
-            padding:
-                EdgeInsets.symmetric(horizontal: appContentHorizontalPadding),
+            padding: EdgeInsets.symmetric(horizontal: appContentHorizontalPadding),
             children: [
               OverviewDetailsContainer(
                   backgroundColor: Theme.of(context)
@@ -42,10 +50,10 @@ class TeacherHomeOverviewContainer extends StatelessWidget {
                   bottomButtonTitleKey: viewStudentsKey,
                   onTapBottomViewButton: () {
                     Get.toNamed(Routes.studentsScreen);
-                  })
+                  }),
             ],
           ),
-        ),
+        ),*/
       ],
     );
   }

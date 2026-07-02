@@ -24,13 +24,15 @@ class OverviewDetailsContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsetsDirectional.only(end: 15.0),
-      width: 265,
+      margin: const EdgeInsetsDirectional.only(end: 15.0, start: 15.0),
+      //width: 265.0,
+      width: MediaQuery.sizeOf(context).width,
       height: double.maxFinite,
-      padding: const EdgeInsets.all(15),
+      padding: const EdgeInsets.all(15.0),
       decoration: BoxDecoration(
-          color: backgroundColor.withValues(alpha: 0.1),
-          borderRadius: BorderRadius.circular(8.0)),
+        color: backgroundColor.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(8.0),
+      ),
       child: Column(
         children: [
           Row(

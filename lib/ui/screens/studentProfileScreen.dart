@@ -625,7 +625,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                         : widget.studentDetails.student!.admissionDate ?? "",
               ),
               _buildStudentDetailsTitleAndValueContainer(
-                  titleKey: classSectionKey,
+                  titleKey: classSection2Key,
                   valyeKey: widget.classSection.fullName ?? "-"),
               _buildStudentDetailsTitleAndValueContainer(
                   titleKey: rollNoKey,

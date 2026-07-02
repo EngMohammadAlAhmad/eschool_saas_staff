@@ -55,17 +55,14 @@ class TeacherLeavesContainer extends StatelessWidget {
           // Show appropriate content based on permissions first, then data
           !hasPermission
               ? Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: appContentHorizontalPadding),
-                  child:
-                      const CustomTextContainer(textKey: noLeavePermissionKey),
+                  padding: EdgeInsets.symmetric(horizontal: appContentHorizontalPadding),
+                  child: const CustomTextContainer(textKey: noLeavePermissionKey),
                 )
               : todaysLeave.isEmpty
                   ? Padding(
                       padding: EdgeInsets.symmetric(
                           horizontal: appContentHorizontalPadding),
-                      child: const CustomTextContainer(
-                          textKey: everyoneIsPresentTodayKey),
+                      child: const CustomTextContainer(textKey: everyoneIsPresentTodayKey),
                     )
                   : Column(
                       children: [

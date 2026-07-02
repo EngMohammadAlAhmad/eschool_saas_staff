@@ -43,8 +43,7 @@ class LeavesScreen extends StatefulWidget {
     );
   }
 
-  static Map<String, dynamic> buildArguments(
-      {required bool showMyLeaves, UserDetails? userDetails}) {
+  static Map<String, dynamic> buildArguments({required bool showMyLeaves, UserDetails? userDetails}) {
     return {"showMyLeaves": showMyLeaves, "userDetails": userDetails};
   }
 
@@ -110,8 +109,7 @@ class _LeavesScreenState extends State<LeavesScreen> {
     }
   }
 
-  Widget _buildLeaveCountContainer(
-      {required double width, required String title, required String value}) {
+  Widget _buildLeaveCountContainer({required double width, required String title, required String value}) {
     return Container(
       width: width,
       height: 70,
@@ -158,20 +156,14 @@ class _LeavesScreenState extends State<LeavesScreen> {
           return Align(
             alignment: Alignment.topCenter,
             child: SingleChildScrollView(
-              padding: EdgeInsets.only(
-                  top:
-                      Utils.appContentTopScrollPadding(context: context) + 100),
+              padding: EdgeInsets.only(top: Utils.appContentTopScrollPadding(context: context) + 100),
               child: Column(
                 children: [
                   Padding(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: appContentHorizontalPadding),
+                    padding: EdgeInsets.symmetric(horizontal: appContentHorizontalPadding),
                     child: LayoutBuilder(builder: (context, boxConstraints) {
-                      double remainingLeaves = (state.monthlyAllowedLeaves -
-                          context.read<UserLeavesCubit>().getTakenLeavesCount(
-                              monthNumber: getSelectedMonthNumber()));
-                      remainingLeaves =
-                          remainingLeaves < 0 ? 0 : remainingLeaves;
+                      double remainingLeaves = (state.monthlyAllowedLeaves - context.read<UserLeavesCubit>().getTakenLeavesCount(monthNumber: getSelectedMonthNumber()));
+                      remainingLeaves = remainingLeaves < 0 ? 0 : remainingLeaves;
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -341,50 +333,48 @@ class _LeavesScreenState extends State<LeavesScreen> {
                     },
                     builder: (context, state) {
                       return AppbarFilterBackgroundContainer(
-                        child:
-                            LayoutBuilder(builder: (context, boxConstraints) {
+                        child: LayoutBuilder(builder: (context, boxConstraints) {
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               FilterButton(
-                                  onTap: () {
-                                    if (state is SessionYearsFetchSuccess &&
-                                        state.sessionYears.isNotEmpty) {
-                                      Utils.showBottomSheet(
-                                          child: FilterSelectionBottomsheet<
-                                              SessionYear>(
-                                            selectedValue:
-                                                _selectedSessionYear!,
-                                            titleKey: sessionYearKey,
-                                            values: state.sessionYears,
-                                            onSelection: (value) {
-                                              changeSelectedSessionYear(value!);
-                                              Get.back();
-                                            },
-                                          ),
-                                          context: context);
-                                    }
-                                  },
-                                  titleKey: _selectedSessionYear?.name ??
-                                      sessionYearKey,
-                                  width: boxConstraints.maxWidth * (0.49)),
-                              FilterButton(
-                                  onTap: () {
+                                onTap: () {
+                                  if (state is SessionYearsFetchSuccess && state.sessionYears.isNotEmpty) {
                                     Utils.showBottomSheet(
-                                        child:
-                                            FilterSelectionBottomsheet<String>(
-                                          selectedValue: _selectedMonthKey,
-                                          titleKey: monthKey,
-                                          values: months,
-                                          onSelection: (value) {
-                                            changeSelectedMonth(value!);
-                                            Get.back();
-                                          },
-                                        ),
-                                        context: context);
-                                  },
-                                  titleKey: _selectedMonthKey,
-                                  width: boxConstraints.maxWidth * (0.49)),
+                                      child: FilterSelectionBottomsheet<SessionYear>(
+                                        selectedValue: _selectedSessionYear!,
+                                        titleKey: sessionYearKey,
+                                        values: state.sessionYears,
+                                        onSelection: (value) {
+                                          changeSelectedSessionYear(value!);
+                                          Get.back();
+                                        },
+                                      ),
+                                      context: context,
+                                    );
+                                  }
+                                },
+                                titleKey: _selectedSessionYear?.name ?? sessionYearKey,
+                                width: boxConstraints.maxWidth * (0.49),
+                              ),
+                              FilterButton(
+                                onTap: () {
+                                  Utils.showBottomSheet(
+                                    child: FilterSelectionBottomsheet<String>(
+                                      selectedValue: _selectedMonthKey,
+                                      titleKey: monthKey,
+                                      values: months,
+                                      onSelection: (value) {
+                                        changeSelectedMonth(value!);
+                                        Get.back();
+                                      },
+                                    ),
+                                    context: context,
+                                  );
+                                },
+                                titleKey: _selectedMonthKey,
+                                width: boxConstraints.maxWidth * (0.49),
+                              ),
                             ],
                           );
                         }),
