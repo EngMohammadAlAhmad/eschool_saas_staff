@@ -32,6 +32,7 @@ class ClassesScreen extends StatefulWidget {
 }
 
 class _ClassesScreenState extends State<ClassesScreen> {
+
   @override
   void initState() {
     Future.delayed(Duration.zero, () {
@@ -77,14 +78,11 @@ class _ClassesScreenState extends State<ClassesScreen> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             CustomTextContainer(
-                                textKey:
-                                    "${Utils.getTranslatedLabel(classTeacherKey)} : ${classSection.getClassTeacherNames()}"),
-                            (classSection.classDetails?.semesterName ?? '')
-                                    .isEmpty
+                                textKey: "${Utils.getTranslatedLabel(classTeacherKey)} : ${classSection.getClassTeacherNames()}"),
+                            (classSection.classDetails?.semesterName ?? '').isEmpty
                                 ? const SizedBox()
                                 : CustomTextContainer(
-                                    textKey:
-                                        "${Utils.getTranslatedLabel(semesterKey)} : ${classSection.classDetails?.semesterName}"),
+                                    textKey: "${Utils.getTranslatedLabel(semesterKey)} : ${classSection.classDetails?.semesterName}"),
                           ],
                         ),
                       ),

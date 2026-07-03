@@ -9,8 +9,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class ClassListItemContainer extends StatelessWidget {
   final ClassSection classSectionDetails;
   final int index;
-  const ClassListItemContainer(
-      {required this.classSectionDetails, super.key, required this.index});
+
+  const ClassListItemContainer({
+    required this.classSectionDetails,
+    super.key,
+    required this.index
+  });
 
   Widget _boldText(String text) {
     return Text(
@@ -34,10 +38,19 @@ class ClassListItemContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Determine if the index is even or odd
+    bool isEven = index % 2 == 0;
+
     return Container(
+      width: double.infinity, // Ensures the background color stretches fully
       margin: EdgeInsets.symmetric(vertical: appContentHorizontalPadding),
       padding: EdgeInsets.all(appContentHorizontalPadding),
       decoration: BoxDecoration(
+        // Increased alpha to 0.15 so the color is actually visible.
+        // Explicitly set odd items to the theme's surface color instead of transparent.
+        color: isEven
+            ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.07)
+            : Theme.of(context).colorScheme.surface,
         border: Border.all(color: Theme.of(context).colorScheme.tertiary),
         borderRadius: BorderRadius.circular(4),
       ),
@@ -49,7 +62,7 @@ class ClassListItemContainer extends StatelessWidget {
           Text.rich(
             TextSpan(
               text: (classSectionDetails.classDetails?.semesterName != null &&
-                      classSectionDetails.classDetails?.semesterName != '')
+                  classSectionDetails.classDetails?.semesterName != '')
                   ? '(${classSectionDetails.classDetails!.semesterName})'
                   : '',
               style: const TextStyle(
@@ -75,10 +88,10 @@ class ClassListItemContainer extends StatelessWidget {
             ),
             ...List.generate(
               classSectionDetails.classTeachers!.length,
-              (index) => Padding(
+                  (index) => Padding(
                 padding: const EdgeInsets.only(bottom: 5),
                 child: _boldText(classSectionDetails
-                        .classTeachers![index].teacher?.fullName ??
+                    .classTeachers![index].teacher?.fullName ??
                     "-"),
               ),
             ),
@@ -87,11 +100,11 @@ class ClassListItemContainer extends StatelessWidget {
             ),
           ],
           if (classSectionDetails.subjectTeachers
-                  ?.where((element) =>
-                      element.teacher?.id ==
-                      context.read<AuthCubit>().getUserDetails().id)
-                  .toList()
-                  .isNotEmpty ??
+              ?.where((element) =>
+          element.teacher?.id ==
+              context.read<AuthCubit>().getUserDetails().id)
+              .toList()
+              .isNotEmpty ??
               false) ...[
             _normalTitleText(
                 Utils.getTranslatedLabel(yourSubjectsKey), context),
@@ -100,18 +113,18 @@ class ClassListItemContainer extends StatelessWidget {
             ),
             ...List.generate(
               classSectionDetails.subjectTeachers!.length,
-              (index) =>
-                  //filter out the subjects which the current user does not take
-                  classSectionDetails.subjectTeachers![index].teacher?.id !=
-                          context.read<AuthCubit>().getUserDetails().id
-                      ? const SizedBox.shrink()
-                      : Padding(
-                          padding: const EdgeInsets.only(bottom: 5),
-                          child: _boldText(classSectionDetails
-                                  .subjectTeachers![index].subject
-                                  ?.getSybjectNameWithType() ??
-                              "-"),
-                        ),
+                  (index) =>
+              //filter out the subjects which the current user does not take
+              classSectionDetails.subjectTeachers![index].teacher?.id !=
+                  context.read<AuthCubit>().getUserDetails().id
+                  ? const SizedBox.shrink()
+                  : Padding(
+                padding: const EdgeInsets.only(bottom: 5),
+                child: _boldText(classSectionDetails
+                    .subjectTeachers![index].subject
+                    ?.getSybjectNameWithType() ??
+                    "-"),
+              ),
             )
           ],
         ],

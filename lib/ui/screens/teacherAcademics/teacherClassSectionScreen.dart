@@ -32,6 +32,7 @@ class TeacherClassSectionScreen extends StatefulWidget {
 }
 
 class _TeacherClassSectionScreenState extends State<TeacherClassSectionScreen> {
+
   @override
   void initState() {
     Future.delayed(Duration.zero, () {
@@ -62,10 +63,9 @@ class _TeacherClassSectionScreenState extends State<TeacherClassSectionScreen> {
                   }
                   return SingleChildScrollView(
                     padding: EdgeInsets.only(
-                        bottom: 25,
-                        top:
-                            Utils.appContentTopScrollPadding(context: context) +
-                                25),
+                      bottom: 25.0,
+                      top: Utils.appContentTopScrollPadding(context: context) + 25,
+                    ),
                     child: Container(
                       padding: EdgeInsets.all(appContentHorizontalPadding),
                       color: Theme.of(context).colorScheme.surface,
@@ -74,7 +74,7 @@ class _TeacherClassSectionScreenState extends State<TeacherClassSectionScreen> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           const SizedBox(
-                            height: 5,
+                            height: 5.0,
                           ),
                           const CustomTextContainer(
                             maxLines: 1,

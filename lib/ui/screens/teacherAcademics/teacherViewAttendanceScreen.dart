@@ -1,3 +1,4 @@
+import 'package:eschool_saas_staff/app/routes.dart';
 import 'package:eschool_saas_staff/cubits/academics/classesCubit.dart';
 import 'package:eschool_saas_staff/cubits/teacherAcademics/attendence/attendanceCubit.dart';
 import 'package:eschool_saas_staff/data/models/classSection.dart';
@@ -6,6 +7,7 @@ import 'package:eschool_saas_staff/ui/styles/themeExtensions/customColorsExtensi
 import 'package:eschool_saas_staff/ui/widgets/appbarFilterBackgroundContainer.dart';
 import 'package:eschool_saas_staff/ui/widgets/customAppbar.dart';
 import 'package:eschool_saas_staff/ui/widgets/customCircularProgressIndicator.dart';
+import 'package:eschool_saas_staff/ui/widgets/customRoundedButton.dart';
 import 'package:eschool_saas_staff/ui/widgets/customTextContainer.dart';
 import 'package:eschool_saas_staff/ui/widgets/errorContainer.dart';
 import 'package:eschool_saas_staff/ui/widgets/filterButton.dart';
@@ -113,7 +115,30 @@ class _TeacherViewAttendanceScreenState
                 );
               }
               if (state.attendance.isEmpty) {
-                return const noDataContainer(titleKey: noAttendanceKey);
+                return Column(
+                  children: [
+                    const noDataContainer(titleKey: noAttendanceKey),
+                    const SizedBox(height: 15),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: appContentHorizontalPadding),
+                      child: CustomRoundedButton(
+                        buttonTitle: addAttendanceKey,
+                        onTap: () {
+                          Get.offNamed(Routes.teacherAddAttendanceScreen,
+                              arguments: {
+                                'dateTime': _selectedDateTime,
+                                'classSection': _selectedClassSection,
+                              });
+                        },
+                        widthPercentage: 0.6,
+                        height: 40,
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        showBorder: false,
+                      ),
+                    ),
+                  ],
+                );
               }
               return Column(
                 children: [

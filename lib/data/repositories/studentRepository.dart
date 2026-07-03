@@ -48,11 +48,7 @@ class StudentRepository {
   }
 
   Future<({List<StudentDetails> students, int currentPage, int totalPage})>
-      getStudents(
-          {required int classSectionId,
-          int? page,
-          int? sessionYearId,
-          String? search}) async {
+      getStudents({required int classSectionId, int? page, int? sessionYearId, String? search}) async {
     try {
       final result = await Api.get(url: Api.getStudents, queryParameters: {
         "class_section_id": classSectionId,

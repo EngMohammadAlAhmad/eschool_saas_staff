@@ -23,8 +23,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 
 class TeacherAddAttendanceScreen extends StatefulWidget {
+  final DateTime? initialDateTime;
+  final ClassSection? initialClassSection;
+
   static Widget getRouteInstance() {
-    //final arguments = Get.arguments as Map<String,dynamic>;
+    final arguments = Get.arguments as Map<String, dynamic>?;
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -38,7 +41,10 @@ class TeacherAddAttendanceScreen extends StatefulWidget {
           create: (context) => ClassesCubit(),
         ),
       ],
-      child: const TeacherAddAttendanceScreen(),
+      child: TeacherAddAttendanceScreen(
+        initialDateTime: arguments?['dateTime'],
+        initialClassSection: arguments?['classSection'],
+      ),
     );
   }
 
@@ -46,7 +52,8 @@ class TeacherAddAttendanceScreen extends StatefulWidget {
     return {};
   }
 
-  const TeacherAddAttendanceScreen({super.key});
+  const TeacherAddAttendanceScreen(
+      {super.key, this.initialDateTime, this.initialClassSection});
 
   @override
   State<TeacherAddAttendanceScreen> createState() =>
@@ -57,8 +64,8 @@ class _TeacherAddAttendanceScreenState
     extends State<TeacherAddAttendanceScreen> {
   List<({StudentAttendanceStatus status, int studentId})> attendanceReport = [];
 
-  DateTime _selectedDateTime = DateTime.now();
-  ClassSection? _selectedClassSection;
+  late DateTime _selectedDateTime = widget.initialDateTime ?? DateTime.now();
+  late ClassSection? _selectedClassSection = widget.initialClassSection;
 
   bool _isSendNotificationToGuardian = false;
   bool _isHoliday = false;
@@ -68,6 +75,10 @@ class _TeacherAddAttendanceScreenState
     Future.delayed(Duration.zero, () {
       if (mounted) {
         context.read<ClassesCubit>().getClasses();
+        if (_selectedClassSection != null) {
+          getAttendance();
+          getStudentList();
+        }
       }
     });
     super.initState();

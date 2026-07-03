@@ -79,8 +79,8 @@ class _ExamsScreenState extends State<ExamsScreen> {
 
   Widget _buildTitleValueContainer(
       {required String titleKey,
-      required String value,
-      required bool showBorder}) {
+        required String value,
+        required bool showBorder}) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -105,11 +105,18 @@ class _ExamsScreenState extends State<ExamsScreen> {
     );
   }
 
-  Widget _buildExamItem({required OfflineExam offlineExam}) {
+  Widget _buildExamItem({required OfflineExam offlineExam, required int index}) {
+    // Determine if the index is even or odd
+    bool isEven = index % 2 == 0;
+
     return Container(
       width: double.maxFinite,
       margin: EdgeInsets.symmetric(vertical: appContentHorizontalPadding),
       decoration: BoxDecoration(
+        // Apply different background colors based on the index
+          color: isEven
+              ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.07)
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(8),
           border: Border.all(color: Theme.of(context).colorScheme.tertiary)),
       child: LayoutBuilder(builder: (context, boxConstraints) {
@@ -121,7 +128,7 @@ class _ExamsScreenState extends State<ExamsScreen> {
               decoration: BoxDecoration(
                 border: Border(
                   bottom:
-                      BorderSide(color: Theme.of(context).colorScheme.tertiary),
+                  BorderSide(color: Theme.of(context).colorScheme.tertiary),
                 ),
               ),
               child: Row(
@@ -138,14 +145,14 @@ class _ExamsScreenState extends State<ExamsScreen> {
                   (offlineExam.timetableSlots ?? []).isEmpty
                       ? const SizedBox()
                       : IconButton(
-                          onPressed: () {
-                            Utils.showBottomSheet(
-                                child: OfflineExamTimetableBottomsheet(
-                                    timetableSlots:
-                                        offlineExam.timetableSlots ?? []),
-                                context: context);
-                          },
-                          icon: const Icon(Icons.schedule))
+                      onPressed: () {
+                        Utils.showBottomSheet(
+                            child: OfflineExamTimetableBottomsheet(
+                                timetableSlots:
+                                offlineExam.timetableSlots ?? []),
+                            context: context);
+                      },
+                      icon: const Icon(Icons.schedule))
                 ],
               ),
             ),
@@ -223,8 +230,9 @@ class _ExamsScreenState extends State<ExamsScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    ...state.offlineExams.map((offlineExam) =>
-                        _buildExamItem(offlineExam: offlineExam))
+                    // Use asMap().entries to get both index and value
+                    ...state.offlineExams.asMap().entries.map((entry) =>
+                        _buildExamItem(offlineExam: entry.value, index: entry.key))
                   ],
                 ),
               ),
@@ -314,21 +322,20 @@ class _ExamsScreenState extends State<ExamsScreen> {
                           children: [
                             FilterButton(
                               onTap: () {
-                                if (state
-                                        is SessionYearsAndMediumsFetchSuccess &&
-                                    state.mediums.isNotEmpty) {
+                                if (state is SessionYearsAndMediumsFetchSuccess && state.mediums.isNotEmpty) {
                                   Utils.showBottomSheet(
-                                      child: FilterSelectionBottomsheet<Medium>(
-                                          onSelection: (value) {
-                                            changeSelectedMedium(value!);
-                                            getExams();
-                                            Get.back();
-                                          },
-                                          selectedValue:
-                                              _selectedMedium ?? Medium(),
-                                          titleKey: mediumKey,
-                                          values: state.mediums),
-                                      context: context);
+                                    child: FilterSelectionBottomsheet<Medium>(
+                                      onSelection: (value) {
+                                        changeSelectedMedium(value!);
+                                        getExams();
+                                        Get.back();
+                                      },
+                                      selectedValue: _selectedMedium ?? Medium(),
+                                      titleKey: mediumKey,
+                                      values: state.mediums,
+                                      ),
+                                    context: context,
+                                  );
                                 }
                               },
                               titleKey: _selectedMedium?.name ?? mediumKey,
@@ -337,11 +344,11 @@ class _ExamsScreenState extends State<ExamsScreen> {
                             FilterButton(
                               onTap: () {
                                 if (state
-                                        is SessionYearsAndMediumsFetchSuccess &&
+                                is SessionYearsAndMediumsFetchSuccess &&
                                     state.sessionYears.isNotEmpty) {
                                   Utils.showBottomSheet(
                                       child: FilterSelectionBottomsheet<
-                                              SessionYear>(
+                                          SessionYear>(
                                           onSelection: (value) {
                                             changeSelectedSessionYear(value!);
                                             getExams();
@@ -384,42 +391,41 @@ class OfflineExamTimetableBottomsheet extends StatelessWidget {
         child: Column(
           children: timetableSlots
               .map((timetableSlot) => Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ListTile(
-                        title: CustomTextContainer(
-                            textKey: timetableSlot.subject
-                                    ?.getSybjectNameWithType() ??
-                                "-"),
-                        subtitle: CustomTextContainer(
-                            textKey:
-                                "${timetableSlot.date ?? "-"} (${timetableSlot.startTime ?? "-"} - ${timetableSlot.endTime ?? "-"})"),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: appContentHorizontalPadding),
-                        child: Row(
-                          children: [
-                            const CustomTextContainer(textKey: totalMarksKey),
-                            CustomTextContainer(
-                              textKey: ": ${timetableSlot.totalMarks ?? 0}",
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.w600),
-                            ),
-                            const Spacer(),
-                            const CustomTextContainer(textKey: passingMarkKey),
-                            CustomTextContainer(
-                              textKey: ": ${timetableSlot.passingMarks ?? 0}",
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.w600),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const Divider()
-                    ],
-                  ))
-              .toList(),
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ListTile(
+                title: CustomTextContainer(
+                    textKey: timetableSlot.subject
+                        ?.getSybjectNameWithType() ??
+                        "-"),
+                subtitle: CustomTextContainer(
+                    textKey:
+                    "${timetableSlot.date ?? "-"} (${timetableSlot.startTime ?? "-"} - ${timetableSlot.endTime ?? "-"})"),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: appContentHorizontalPadding),
+                child: Row(
+                  children: [
+                    const CustomTextContainer(textKey: totalMarksKey),
+                    CustomTextContainer(
+                      textKey: ": ${timetableSlot.totalMarks ?? 0}",
+                      style:
+                      const TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                    const Spacer(),
+                    const CustomTextContainer(textKey: passingMarkKey),
+                    CustomTextContainer(
+                      textKey: ": ${timetableSlot.passingMarks ?? 0}",
+                      style:
+                      const TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                  ],
+                ),
+              ),
+              const Divider()
+            ],
+          )).toList(),
         ));
   }
 }
