@@ -29,6 +29,8 @@ class TeacherMyTimetableScreen extends StatefulWidget {
 
 class _TeacherMyTimetableScreenState extends State<TeacherMyTimetableScreen> {
   late String _selectedDayKey = Utils.weekDays[DateTime.now().weekday - 1];
+  late final PageController _pageController =
+      PageController(initialPage: Utils.weekDays.indexOf(_selectedDayKey));
 
   @override
   void initState() {
@@ -40,6 +42,12 @@ class _TeacherMyTimetableScreenState extends State<TeacherMyTimetableScreen> {
     });
   }
 
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
   Widget _buildDaysContainer() {
     return WeekdaysContainer(
       selectedDayKey: _selectedDayKey,
@@ -47,6 +55,11 @@ class _TeacherMyTimetableScreenState extends State<TeacherMyTimetableScreen> {
         setState(() {
           _selectedDayKey = newSelection;
         });
+        _pageController.animateToPage(
+          Utils.weekDays.indexOf(newSelection),
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.ease,
+        );
       },
     );
   }
@@ -59,45 +72,55 @@ class _TeacherMyTimetableScreenState extends State<TeacherMyTimetableScreen> {
           BlocBuilder<TeacherMyTimetableCubit, TeacherMyTimetableState>(
             builder: (context, state) {
               if (state is TeacherMyTimetableFetchSuccess) {
-                final slots = state.timeTableSlots
-                    .where((element) =>
-                        element.day ==
-                        weekDays[Utils.weekDays.indexOf(_selectedDayKey)])
-                    .toList();
+                return PageView.builder(
+                  controller: _pageController,
+                  onPageChanged: (index) {
+                    setState(() {
+                      _selectedDayKey = Utils.weekDays[index];
+                    });
+                  },
+                  itemCount: Utils.weekDays.length,
+                  itemBuilder: (context, index) {
+                    final slots = state.timeTableSlots
+                        .where((element) => element.day == weekDays[index])
+                        .toList();
 
-                if (slots.isEmpty) {
-                  return const noDataContainer(titleKey: noTimeTableKey);
-                }
-                return Align(
-                  alignment: Alignment.topCenter,
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.only(
-                        bottom: 25,
-                        top:
-                            Utils.appContentTopScrollPadding(context: context) +
+                    if (slots.isEmpty) {
+                      return const noDataContainer(titleKey: noTimeTableKey);
+                    }
+                    return Align(
+                      alignment: Alignment.topCenter,
+                      child: SingleChildScrollView(
+                        padding: EdgeInsets.only(
+                            bottom: 25,
+                            top: Utils.appContentTopScrollPadding(
+                                    context: context) +
                                 110),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      padding: EdgeInsets.all(appContentHorizontalPadding),
-                      color: Theme.of(context).colorScheme.surface,
-                      child: Column(
-                        children: slots
-                            .map((timeTableSlot) => TimetableSlotContainer(
-                                  note: timeTableSlot.note ?? "",
-                                  endTime: timeTableSlot.endTime ?? "",
-                                  isForClass: false,
-                                  classSectionName:
-                                      timeTableSlot.classSection?.fullName ??
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.all(appContentHorizontalPadding),
+                          color: Theme.of(context).colorScheme.surface,
+                          child: Column(
+                            children: slots
+                                .map((timeTableSlot) => TimetableSlotContainer(
+                                      note: timeTableSlot.note ?? "",
+                                      endTime: timeTableSlot.endTime ?? "",
+                                      isForClass: false,
+                                      classSectionName:
+                                          timeTableSlot.classSection
+                                                  ?.fullName ??
+                                              "-",
+                                      startTime: timeTableSlot.startTime ?? "",
+                                      subjectName: timeTableSlot.subject
+                                              ?.getSybjectNameWithType() ??
                                           "-",
-                                  startTime: timeTableSlot.startTime ?? "",
-                                  subjectName: timeTableSlot.subject
-                                          ?.getSybjectNameWithType() ??
-                                      "-",
-                                ))
-                            .toList(),
+                                    ))
+                                .toList(),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  },
                 );
               }
 
