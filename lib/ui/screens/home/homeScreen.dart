@@ -328,6 +328,10 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void _onWillPop() {
+    if (_currentSelectedBottomNavIndex != 0) {
+      changeCurrentBottomNavIndex(0);
+      return;
+    }
     setState(() {
       canPop = true;
     });
