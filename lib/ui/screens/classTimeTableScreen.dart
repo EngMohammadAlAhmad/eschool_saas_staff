@@ -48,6 +48,7 @@ class _ClassTimeTableScreenState extends State<ClassTimeTableScreen> {
   late String _selectedDayKey = Utils.weekDays.first;
   late final PageController _pageController =
       PageController(initialPage: Utils.weekDays.indexOf(_selectedDayKey));
+  bool _isManualPageChange = false;
 
   @override
   void initState() {
@@ -81,14 +82,19 @@ class _ClassTimeTableScreenState extends State<ClassTimeTableScreen> {
     return WeekdaysContainer(
       selectedDayKey: _selectedDayKey,
       onSelectionChange: (String newSelection) {
+        _isManualPageChange = true;
         setState(() {
           _selectedDayKey = newSelection;
         });
-        _pageController.animateToPage(
+        _pageController
+            .animateToPage(
           Utils.weekDays.indexOf(newSelection),
           duration: const Duration(milliseconds: 500),
           curve: Curves.ease,
-        );
+        )
+            .then((_) {
+          _isManualPageChange = false;
+        });
       },
     );
   }
@@ -108,9 +114,11 @@ class _ClassTimeTableScreenState extends State<ClassTimeTableScreen> {
           return PageView.builder(
             controller: _pageController,
             onPageChanged: (index) {
-              setState(() {
-                _selectedDayKey = Utils.weekDays[index];
-              });
+              if (!_isManualPageChange) {
+                setState(() {
+                  _selectedDayKey = Utils.weekDays[index];
+                });
+              }
             },
             itemCount: Utils.weekDays.length,
             itemBuilder: (context, index) {
